@@ -1,0 +1,3 @@
+add_executable(OpenGLAppExample main.cpp)
+target_compile_features(OpenGLAppExample PRIVATE cxx_std_20)
+target_link_libraries(OpenGLAppExample PRIVATE OpenGLApp)
