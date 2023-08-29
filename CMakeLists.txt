@@ -5,6 +5,7 @@ find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
 find_package(glm REQUIRED)
+find_package(imgui REQUIRED)
 
 add_library(OpenGLApp STATIC src/OpenGLApp/Window.cpp
         src/OpenGLApp/State.cpp
