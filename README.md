@@ -6,6 +6,24 @@ Boilderplate code for OpenGL + [GLEW](https://github.com/nigels-com/glew) + [GLF
 
 # Usage
 
+## Build using CMake
+
+```cmake
+include(FetchContent)
+FetchContent_Declare(
+    OpenGLApp
+    GIT_REPOSITORY https://github.com/stripe2933/OpenGLApp.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(OpenGLApp)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE OpenGLApp) # Your target name goes to here.
+```
+
+Now you can use the library in your target.
+
+## Code
+
 See [example](https://github.com/stripe2933/OpenGLApp/blob/main/example/main.cpp) for the details. This program renders
 a white triangle.
 
