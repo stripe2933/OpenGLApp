@@ -7,6 +7,7 @@ endfunction()
 
 example_executable(white_triangle white_triangle.cpp)
 example_executable(rotating_cube rotating_cube.cpp)
+example_executable(targeting_camera targeting_camera.cpp)
 
 # Copy shader files to executable folder.
 add_custom_target(copy_shaders COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy_shaders.cmake)

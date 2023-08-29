@@ -81,4 +81,4 @@ int main(){
 }
 ```
 
-![Result screenshot](example/white_triangle_screenshot.png)
+![Result screenshot](example/white_triangle.png)
