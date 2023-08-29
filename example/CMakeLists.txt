@@ -1,3 +1,13 @@
-add_executable(OpenGLAppExample main.cpp)
-target_compile_features(OpenGLAppExample PRIVATE cxx_std_20)
-target_link_libraries(OpenGLAppExample PRIVATE OpenGLApp)
+function(example_executable target_name)
+    SET(executable_name ${PROJECT_NAME}_${target_name})
+    add_executable(${executable_name} ${ARGN})
+    target_compile_features(${executable_name} PRIVATE cxx_std_20)
+    target_link_libraries(${executable_name} PRIVATE OpenGLApp)
+endfunction()
+
+example_executable(white_triangle white_triangle.cpp)
+example_executable(rotating_cube rotating_cube.cpp)
+
+# Copy shader files to executable folder.
+add_custom_target(copy_shaders COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy_shaders.cmake)
+add_dependencies(${PROJECT_NAME} copy_shaders)
