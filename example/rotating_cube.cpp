@@ -103,13 +103,13 @@ public:
 
         program.setUniform("view_pos", camera_pos);
 
-        program.setUniform("light.position", glm::vec3(0.f, 0.f, 3.f));
+        program.setUniform("light.position", glm::vec3(0.f, -1.f, 2.f));
         program.setUniform("light.ambient", glm::vec3(0.1f));
         program.setUniform("light.diffuse", glm::vec3(1.f));
         program.setUniform("light.specular", glm::vec3(1.f));
         program.setUniform("light.constant",  1.0f);
-        program.setUniform("light.linear",    0.35f);
-        program.setUniform("light.quadratic", 0.44f);
+        program.setUniform("light.linear",    0.02f);
+        program.setUniform("light.quadratic", 1.7e-3f);
 
         program.setUniform("material.ambient", glm::vec3(1.f, 0.5f, 0.31f));
         program.setUniform("material.diffuse", glm::vec3(1.f, 0.5f, 0.31f));

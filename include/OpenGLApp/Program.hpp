@@ -6,7 +6,6 @@
 
 #include <filesystem>
 #include <GL/glew.h>
-#include "State.hpp"
 
 namespace OpenGL{
 /**
@@ -32,7 +31,7 @@ namespace OpenGL{
         /**
          * @brief Get the uniform location of the uniform variable of name \p name .
          * @param name Name of the uniform variable.
-         * @return Uniform location in \p GLint
+         * @return Uniform location in \p GLint , -1 if the uniform variable is not found.
          */
         GLint getUniformLocation(std::string_view name) const;
 
@@ -49,6 +48,8 @@ namespace OpenGL{
         void use() const;
     };
 };
+
+#include "State.hpp"
 
 void OpenGL::Program::setUniform(std::string_view name, auto value) {
     OpenGL::State::setUniform(handle, getUniformLocation(name), std::move(value));

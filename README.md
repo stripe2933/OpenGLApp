@@ -28,36 +28,19 @@ See [example](https://github.com/stripe2933/OpenGLApp/blob/main/example/main.cpp
 a white triangle.
 
 ```cpp
-#include <array>
-#include <Window.hpp>
+#include <OpenGLApp/Window.hpp>
+#include <OpenGLApp/Program.hpp>
 
-class HelloTriangle : public Window{
+class App : public OpenGL::Window{
 private:
-    static constexpr const char *VERTEX_SHADER_SOURCE = R"(
-        #version 330 core
-
-        layout (location = 0) in vec2 aPos;
-
-        void main(){
-            gl_Position = vec4(aPos, 0.0, 1.0);
-        }
-    )";
-    static constexpr const char *FRAGMENT_SHADER_SOURCE = R"(
-        #version 330 core
-
-        out vec4 fragColor;
-
-        void main(){
-            fragColor = vec4(1.0);
-        }
-    )";
-    static constexpr std::array<float, 6> vertices {
-        -0.5f, -0.5f,
-         0.5f, -0.5f,
-         0.0f,  0.5f
+    static constexpr std::array<glm::vec2, 3> vertices {
+        glm::vec2 { -0.5f, -0.5f },
+        glm::vec2 { 0.5f, -0.5f },
+        glm::vec2 { 0.0f,  0.5f }
     };
 
-    GLuint program, vao, position_vbo;
+    OpenGL::Program program;
+    GLuint vao, vbo;
 
     void update(float time_delta) override {
 
@@ -66,49 +49,35 @@ private:
     void draw() const override {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(program);
+        program.use();
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
 public:
-    HelloTriangle() : Window { 800, 480, "Hello Triangle" } {
-        GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex_shader, 1, &VERTEX_SHADER_SOURCE, nullptr);
-        glCompileShader(vertex_shader);
-
-        GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment_shader, 1, &FRAGMENT_SHADER_SOURCE, nullptr);
-        glCompileShader(fragment_shader);
-
-        program = glCreateProgram();
-        glAttachShader(program, vertex_shader);
-        glAttachShader(program, fragment_shader);
-        glLinkProgram(program);
-
-        glDeleteShader(vertex_shader);
-        glDeleteShader(fragment_shader);
-
+    App() : Window { 800, 480, "Hello Triangle" },
+            program { "shaders/white_triangle.vert", "shaders/white_triangle.frag" }
+    {
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
 
-        glGenBuffers(1, &position_vbo);
-        glBindBuffer(GL_ARRAY_BUFFER, position_vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+        glGenBuffers(1, &vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+        glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), nullptr);
         glEnableVertexAttribArray(0);
     }
 
-    ~HelloTriangle() noexcept override{
-        glDeleteProgram(program);
+    ~App() noexcept override{
+        // program is automatically destroyed using RAII pattern.
         glDeleteVertexArrays(1, &vao);
-        glDeleteBuffers(1, &position_vbo);
+        glDeleteBuffers(1, &vbo);
     }
 };
 
 int main(){
-    HelloTriangle{}.run();
+    App{}.run();
 }
 ```
 

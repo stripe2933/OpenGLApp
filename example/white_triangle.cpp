@@ -6,7 +6,6 @@
  * It just draws a white triangle.
  */
 
-#include <array>
 #include <OpenGLApp/Window.hpp>
 #include <OpenGLApp/Program.hpp>
 
