@@ -12,7 +12,7 @@ namespace OpenGL{
     class Window{
     private:
         glm::uvec2 size;
-        glm::uvec2 framebuffer_size;
+        glm::vec<2, GLsizei> framebuffer_size;
 
     protected:
         GLFWwindow* const window;
@@ -34,7 +34,7 @@ namespace OpenGL{
         void run();
 
         [[nodiscard]] glm::uvec2 getSize() const noexcept;
-        [[nodiscard]] glm::uvec2 getFramebufferSize() const noexcept;
+        [[nodiscard]] glm::vec<2, GLsizei> getFramebufferSize() const noexcept;
         [[nodiscard]] float getAspectRatio() const noexcept;
     };
 };

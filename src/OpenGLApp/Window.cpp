@@ -65,6 +65,8 @@ OpenGL::Window::Window(int width, int height, const char *title)
         throw std::runtime_error("Failed to initialize GLEW");
     }
 
+    glfwGetFramebufferSize(window, &framebuffer_size.x, &framebuffer_size.y);
+
     // Make callback can access the class instance using pointer.
     glfwSetWindowUserPointer(window, this);
     glfwSetWindowSizeCallback(window, [](GLFWwindow* window_ptr, int width, int height){
@@ -116,7 +118,7 @@ glm::uvec2 OpenGL::Window::getSize() const noexcept {
     return size;
 }
 
-glm::uvec2 OpenGL::Window::getFramebufferSize() const noexcept {
+glm::vec<2, GLsizei> OpenGL::Window::getFramebufferSize() const noexcept {
     return framebuffer_size;
 }
 
