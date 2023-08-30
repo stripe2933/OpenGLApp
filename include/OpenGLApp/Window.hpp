@@ -12,6 +12,7 @@ namespace OpenGL{
     class Window{
     private:
         glm::uvec2 size;
+        glm::uvec2 framebuffer_size;
 
     protected:
         GLFWwindow* const window;
@@ -19,6 +20,7 @@ namespace OpenGL{
         virtual void update(float time_delta) = 0;
         virtual void draw() const = 0;
 
+        virtual void onWindowSizeChanged(int width, int height);
         virtual void onFramebufferSizeChanged(int width, int height);
         virtual void onKeyChanged(int key, int scancode, int action, int mods);
         virtual void onMouseButtonChanged(int button, int action, int mods);
@@ -32,6 +34,7 @@ namespace OpenGL{
         void run();
 
         [[nodiscard]] glm::uvec2 getSize() const noexcept;
+        [[nodiscard]] glm::uvec2 getFramebufferSize() const noexcept;
         [[nodiscard]] float getAspectRatio() const noexcept;
     };
 };

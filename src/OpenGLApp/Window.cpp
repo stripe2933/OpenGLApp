@@ -29,8 +29,12 @@ namespace{
     }
 };
 
-void OpenGL::Window::onFramebufferSizeChanged(int width, int height) {
+void OpenGL::Window::onWindowSizeChanged(int width, int height) {
     size = glm::uvec2(width, height);
+}
+
+void OpenGL::Window::onFramebufferSizeChanged(int width, int height) {
+    framebuffer_size = glm::uvec2(width, height);
     glViewport(0, 0, width, height);
 }
 
@@ -63,6 +67,10 @@ OpenGL::Window::Window(int width, int height, const char *title)
 
     // Make callback can access the class instance using pointer.
     glfwSetWindowUserPointer(window, this);
+    glfwSetWindowSizeCallback(window, [](GLFWwindow* window_ptr, int width, int height){
+        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        app->onWindowSizeChanged(width, height);
+    });
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window_ptr, int width, int height){
         auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onFramebufferSizeChanged(width, height);
@@ -106,6 +114,10 @@ void OpenGL::Window::run() {
 
 glm::uvec2 OpenGL::Window::getSize() const noexcept {
     return size;
+}
+
+glm::uvec2 OpenGL::Window::getFramebufferSize() const noexcept {
+    return framebuffer_size;
 }
 
 float OpenGL::Window::getAspectRatio() const noexcept {
