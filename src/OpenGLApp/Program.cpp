@@ -73,25 +73,26 @@ namespace{
     }
 };
 
-GLint OpenGL::Program::getUniformLocation(std::string_view name) const {
-    auto it = std::ranges::find(uniform_locations, name, [](const auto &pair) { return pair.first; });
-    if (it == uniform_locations.cend()){
-        GLint location = glGetUniformLocation(handle, name.data());
-        return uniform_locations.emplace_back(name, location).second;
-    }
-    return it->second;
+OpenGL::Program::Program(const std::filesystem::path &vertex_shader_path, const std::filesystem::path &fragment_shader_path)
+        : handle { createProgram(vertex_shader_path, fragment_shader_path) }
+{
+
 }
 
 OpenGL::Program::~Program() noexcept {
     glDeleteProgram(handle);
 }
 
-void OpenGL::Program::use() const {
-    State::setProgram(handle);
+GLint OpenGL::Program::getUniformLocation(std::string_view name) const {
+    auto it = std::ranges::find(uniform_locations, name, [](const auto &pair) { return pair.first; });
+    if (it == uniform_locations.cend()){
+        std::string name_string { name };
+        GLint location = glGetUniformLocation(handle, name_string.c_str());
+        return uniform_locations.emplace_back(std::move(name_string), location).second;
+    }
+    return it->second;
 }
 
-OpenGL::Program::Program(const std::filesystem::path &vertex_shader_path, const std::filesystem::path &fragment_shader_path)
-        : handle { createProgram(vertex_shader_path, fragment_shader_path) }
-{
-
+void OpenGL::Program::use() const {
+    State::setProgram(handle);
 }

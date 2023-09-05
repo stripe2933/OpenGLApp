@@ -6,6 +6,13 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+void OpenGL::Camera::invalidate_cache() noexcept {
+    front = std::nullopt;
+    right = std::nullopt;
+    up = std::nullopt;
+}
+
+
 glm::vec3 OpenGL::Camera::getFront() const noexcept {
     if (!front.has_value()) {
         front = glm::vec3 {
@@ -31,6 +38,10 @@ glm::vec3 OpenGL::Camera::getUp() const noexcept {
     return up.value();
 }
 
+glm::vec3 OpenGL::Camera::getPosition() const noexcept {
+    return target - distance * getFront();
+}
+
 glm::mat4 OpenGL::Camera::getView() const noexcept {
     return glm::lookAt(getPosition(), target, world_up);
 }
@@ -39,20 +50,16 @@ glm::mat4 OpenGL::Camera::getProjection(float aspect_ratio) const noexcept {
     return glm::perspective(fov, aspect_ratio, min_distance, max_distance);
 }
 
+float OpenGL::Camera::getPitch() const noexcept {
+    return pitch;
+}
+
 void OpenGL::Camera::addPitch(float amount) noexcept {
     static const float pitch_min = std::nextafter(-glm::half_pi<float>(), std::numeric_limits<float>::max()), /* smallest x s.t. x > -π/2 */
                        pitch_max = std::nextafter(glm::half_pi<float>(), std::numeric_limits<float>::min()); /* biggest x s.t. x < π/2 */
 
     pitch = glm::clamp(pitch + amount, pitch_min, pitch_max);
     invalidate_cache();
-}
-
-glm::vec3 OpenGL::Camera::getPosition() const noexcept {
-    return target - distance * getFront();
-}
-
-float OpenGL::Camera::getPitch() const noexcept {
-    return pitch;
 }
 
 float OpenGL::Camera::getYaw() const noexcept {
@@ -65,10 +72,4 @@ void OpenGL::Camera::addYaw(float amount) noexcept {
     constexpr auto two_pi = glm::two_pi<float>();
     yaw = glm::mod(glm::mod(yaw + amount, two_pi) + two_pi, two_pi);
     invalidate_cache();
-}
-
-void OpenGL::Camera::invalidate_cache() noexcept {
-    front = std::nullopt;
-    right = std::nullopt;
-    up = std::nullopt;
 }
