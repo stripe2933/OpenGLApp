@@ -34,7 +34,7 @@ private:
 
 public:
     App() : Window { 800, 480, "Hello Triangle" },
-                      program { "shaders/white_triangle.vert", "shaders/white_triangle.frag" }
+            program { "shaders/white_triangle.vert", "shaders/white_triangle.frag" }
     {
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);

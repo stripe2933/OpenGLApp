@@ -113,7 +113,7 @@ private:
             const glm::vec2 offset = camera_properties.pan_sensitivity * (position - previous_mouse_position.value());
             previous_mouse_position = position;
 
-            camera.yaw += offset.x;
+            camera.addYaw(offset.x);
             camera.addPitch(-offset.y);
 
             onCameraChanged();
@@ -123,8 +123,8 @@ private:
     void onKeyChanged(int key, int scancode, int action, int mods) override {
         if (action == GLFW_PRESS){
             const auto camera_front = camera.getFront();
-            const auto camera_right = glm::normalize(glm::cross(camera_front, OpenGL::Camera::up));
-            const auto camera_up = glm::normalize(glm::cross(camera_right, camera_front));
+            const auto camera_right = camera.getRight();
+            const auto camera_up = camera.getUp();
 
             switch (key){
                 case GLFW_KEY_A:
@@ -171,9 +171,10 @@ private:
 
 public:
     App() : Window { 800, 480, "Targeting Camera" },
-            program { "shaders/targeting_camera.vert", "shaders/targeting_camera.frag" },
-            camera { .distance = 5.f }
+            program { "shaders/targeting_camera.vert", "shaders/targeting_camera.frag" }
     {
+        camera.distance = 5.f;
+
         model = glm::identity<glm::mat4>();
         view = camera.getView();
         projection = camera.getProjection(getAspectRatio());

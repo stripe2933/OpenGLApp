@@ -4,16 +4,25 @@
 
 #pragma once
 
+#include <optional>
+
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/gtc/constants.hpp>
 
 namespace OpenGL{
-    struct Camera{
-        static constexpr glm::vec3 up { 0.f, 1.f, 0.f };
+    class Camera{
+    private:
+        static constexpr glm::vec3 world_up { 0.f, 1.f, 0.f };
 
-        // View matrix parameters.
         float pitch = 0.f; // Camera pitch angle in radians, must be in the range of (-π/2, π/2).
         float yaw = 0.f; // Camera yaw angle in radians.
+
+        mutable std::optional<glm::vec3> front, right, up;
+
+        void invalidate_cache() noexcept;
+
+    public:
+        // View matrix parameters.
         glm::vec3 target = glm::zero<glm::vec3>(); // Target position, rendered in the center of the screen.
         float distance = 1.f; // Distance from target to camera.
 
@@ -27,6 +36,18 @@ namespace OpenGL{
          * @return Normalized front direction vector.
          */
         [[nodiscard]] glm::vec3 getFront() const noexcept;
+
+        /**
+         * @brief Get camera's normalized right direction vector.
+         * @return Normalized right direction vector.
+         */
+        [[nodiscard]] glm::vec3 getRight() const noexcept;
+
+        /**
+         * @brief Get camera's normalized up direction vector.
+         * @return Normalized up direction vector.
+         */
+        [[nodiscard]] glm::vec3 getUp() const noexcept;
 
         /**
          * @brief Get camera's position.
@@ -48,10 +69,29 @@ namespace OpenGL{
         [[nodiscard]] glm::mat4 getProjection(float aspect_ratio) const noexcept;
 
         /**
+         * @brief Get camera pitch angle.
+         * @return Camera pitch angle in radian, bounded in (-π/2, π/2).
+         */
+        float getPitch() const noexcept;
+
+        /**
          * @brief Add camera pitch angle with bound constraint.
          * @param amount Addition amount in radians.
-         * @note You can directly set \p pitch member field, but this function ensures that the updated pitch angle is in the range of (-π/2, π/2).
+         * @note This function ensures that the updated pitch angle is in the range of (-π/2, π/2).
          */
         void addPitch(float amount) noexcept;
+
+        /**
+         * @brief Get camera yaw angle.
+         * @return Camera yaw angle in radian, bounded in [0, 2π).
+         */
+        float getYaw() const noexcept;
+
+        /**
+         * @brief Add camera yaw angle with bound constraint.
+         * @param amount Addition amount in radians.
+         * @note This function ensures that the updated yaw angle is in the range of [0, 2π).
+         */
+        void addYaw(float amount) noexcept;
     };
 };
