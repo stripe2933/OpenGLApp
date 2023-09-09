@@ -15,7 +15,7 @@ namespace OpenGL{
      */
     struct Program{
     private:
-        mutable std::vector<std::pair<std::string, GLint>> uniform_locations; // TODO: change to flat_map
+        mutable std::vector<std::pair<const std::string, GLint>> uniform_locations;
 
     public:
         const GLuint handle;
