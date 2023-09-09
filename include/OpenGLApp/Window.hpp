@@ -36,5 +36,6 @@ namespace OpenGL{
         [[nodiscard]] glm::uvec2 getSize() const noexcept;
         [[nodiscard]] glm::vec<2, GLsizei> getFramebufferSize() const noexcept;
         [[nodiscard]] float getAspectRatio() const noexcept;
+        [[nodiscard]] float getFramebufferAspectRatio() const noexcept;
     };
 };

@@ -125,3 +125,7 @@ glm::vec<2, GLsizei> OpenGL::Window::getFramebufferSize() const noexcept {
 float OpenGL::Window::getAspectRatio() const noexcept {
     return static_cast<float>(size.x) / static_cast<float>(size.y);
 }
+
+float OpenGL::Window::getFramebufferAspectRatio() const noexcept {
+    return static_cast<float>(framebuffer_size.x) / static_cast<float>(framebuffer_size.y);
+}
