@@ -28,8 +28,8 @@ namespace OpenGL{
 
         // Projection matrix parameters.
         float fov = glm::pi<float>() / 4; // Field of view in radians, must be in the range of (0, π).
-        float min_distance = 1e-2f; // Min distance from camera to target. If the target is closer than min_distance, it is clipped.
-        float max_distance = 1e4f; // Max distance from camera to target. If the target is farther than min_distance, it is clipped.
+        float near_distance = 1e-2f; // Near distance from camera to target. If the target is closer than near_distance, it is clipped.
+        float far_distance = 1e4f; // Far distance from camera to target. If the target is farther than far_distance, it is clipped.
 
         /**
          * @brief Get camera's normalized front direction vector.

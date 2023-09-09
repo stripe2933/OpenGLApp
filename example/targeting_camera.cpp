@@ -87,9 +87,10 @@ private:
     }
 
     void onScrollChanged(double xoffset, double yoffset) override {
+        constexpr float min_distance = 1.f;
         camera.distance = std::fmax(
             std::exp(camera_properties.scroll_sensitivity * static_cast<float>(-yoffset)) * camera.distance,
-            camera.min_distance
+            min_distance
         );
         onCameraChanged();
     }

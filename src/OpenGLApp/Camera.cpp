@@ -47,7 +47,7 @@ glm::mat4 OpenGL::Camera::getView() const noexcept {
 }
 
 glm::mat4 OpenGL::Camera::getProjection(float aspect_ratio) const noexcept {
-    return glm::perspective(fov, aspect_ratio, min_distance, max_distance);
+    return glm::perspective(fov, aspect_ratio, near_distance, far_distance);
 }
 
 float OpenGL::Camera::getPitch() const noexcept {
