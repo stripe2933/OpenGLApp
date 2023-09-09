@@ -9,7 +9,7 @@
 namespace{
     GLFWwindow *createGlfwWindow(int width, int height, const char *title){
         if(!glfwInit()){
-            throw std::runtime_error("Failed to initialize GLFW");
+            throw std::runtime_error { "Failed to initialize GLFW" };
         }
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -22,7 +22,7 @@ namespace{
         GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
         if(!window){
             glfwTerminate();
-            throw std::runtime_error("Failed to create GLFW window");
+            throw std::runtime_error { "Failed to create GLFW window" };
         }
 
         return window;
@@ -62,7 +62,7 @@ OpenGL::Window::Window(int width, int height, const char *title)
     glfwSwapInterval(1);
 
     if(glewInit() != GLEW_OK){
-        throw std::runtime_error("Failed to initialize GLEW");
+        throw std::runtime_error { "Failed to initialize GLEW" };
     }
 
     glfwGetFramebufferSize(window, &framebuffer_size.x, &framebuffer_size.y);
