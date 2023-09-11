@@ -63,6 +63,9 @@ namespace OpenGL{
          * @brief Method for calling \p glUseProgram .
          */
         void use() const;
+
+        template <typename... Programs>
+        static void setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs);
     };
 };
 
@@ -70,4 +73,9 @@ namespace OpenGL{
 
 void OpenGL::Program::setUniform(std::string_view name, auto value) {
     OpenGL::State::setUniform(handle, getUniformLocation(name), std::move(value));
+}
+
+template <typename... Programs>
+void OpenGL::Program::setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs) {
+    (programs.setUniformBlockBinding(name, binding_point), ...);
 }
