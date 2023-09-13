@@ -66,6 +66,18 @@ void OpenGL::State::setUniform(GLuint program, GLint uniform_location, float val
     ::setUniform(program, [=]() { glUniform1f(uniform_location, value); });
 }
 
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::ivec2 &&value){
+    ::setUniform(program, [=]() { glUniform2iv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::uvec2 &&value){
+    ::setUniform(program, [=]() { glUniform2uiv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::vec2 &&value){
+    ::setUniform(program, [=]() { glUniform2fv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
 void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::ivec3 &&value){
     ::setUniform(program, [=]() { glUniform3iv(uniform_location, 1, glm::value_ptr(value)); });
 }
