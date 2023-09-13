@@ -15,6 +15,9 @@
   }, {
     "name" : "imgui",
     "version>=" : "1.89.7",
-    "features": ["glfw-binding", "opengl3-binding"]
+    "features" : [ "glfw-binding", "opengl3-binding" ]
+  }, {
+    "name" : "stb",
+    "version>=" : "2023-04-11#1"
   } ]
 }
