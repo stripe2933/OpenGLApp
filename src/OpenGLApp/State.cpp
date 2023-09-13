@@ -66,14 +66,34 @@ void OpenGL::State::setUniform(GLuint program, GLint uniform_location, float val
     ::setUniform(program, [=]() { glUniform1f(uniform_location, value); });
 }
 
-void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::mat4 &&value){
-    ::setUniform(program, [=]() { glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(value)); });
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::ivec3 &&value){
+    ::setUniform(program, [=]() { glUniform3iv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::uvec3 &&value){
+    ::setUniform(program, [=]() { glUniform3uiv(uniform_location, 1, glm::value_ptr(value)); });
 }
 
 void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::vec3 &&value){
     ::setUniform(program, [=]() { glUniform3fv(uniform_location, 1, glm::value_ptr(value)); });
 }
 
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::ivec4 &&value){
+    ::setUniform(program, [=]() { glUniform4iv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::uvec4 &&value){
+    ::setUniform(program, [=]() { glUniform4uiv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
 void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::vec4 &&value){
     ::setUniform(program, [=]() { glUniform4fv(uniform_location, 1, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::mat3 &&value){
+    ::setUniform(program, [=]() { glUniformMatrix3fv(uniform_location, 1, GL_FALSE, glm::value_ptr(value)); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, glm::mat4 &&value){
+    ::setUniform(program, [=]() { glUniformMatrix4fv(uniform_location, 1, GL_FALSE, glm::value_ptr(value)); });
 }
