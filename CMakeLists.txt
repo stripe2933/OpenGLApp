@@ -25,5 +25,5 @@ target_link_libraries(OpenGLApp PUBLIC OpenGL::GL GLEW::GLEW glfw glm::glm)
 target_compile_features(OpenGLApp PUBLIC cxx_std_20)
 
 if (OPENGLAPP_BUILD_EXAMPLE)
-    add_subdirectory(example)
+    add_subdirectory(examples)
 endif()

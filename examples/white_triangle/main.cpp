@@ -6,8 +6,8 @@
  * It just draws a white triangle.
  */
 
-#include <OpenGLApp/Window.hpp>
-#include <OpenGLApp/Program.hpp>
+#include "OpenGLApp/Window.hpp"
+#include "OpenGLApp/Program.hpp"
 
 class App : public OpenGL::Window{
 private:
@@ -17,7 +17,7 @@ private:
         glm::vec2 { 0.0f,  0.5f }
     };
 
-    OpenGL::Program program;
+    OpenGL::Program render_program;
     GLuint vao, vbo;
 
     void update(float time_delta) override {
@@ -27,14 +27,14 @@ private:
     void draw() const override {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        program.use();
+        render_program.use();
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
 public:
     App() : Window { 800, 480, "Hello Triangle" },
-            program { "shaders/white_triangle.vert", "shaders/white_triangle.frag" }
+            render_program { "shaders/white_triangle/vert.vert", "shaders/white_triangle/frag.frag" }
     {
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
@@ -48,7 +48,7 @@ public:
     }
 
     ~App() noexcept override{
-        // program is automatically destroyed using RAII pattern.
+        // render_program is automatically destroyed using RAII pattern.
         glDeleteVertexArrays(1, &vao);
         glDeleteBuffers(1, &vbo);
     }

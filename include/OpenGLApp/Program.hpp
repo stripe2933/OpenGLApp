@@ -10,8 +10,8 @@
 
 namespace OpenGL{
     /**
-     * @brief A wrapper class for OpenGL program object.
-     * @note This class follows RAII structure, so program is created when the object is constructed and deleted when the object is destructed.
+     * @brief A wrapper class for OpenGL render_program object.
+     * @note This class follows RAII structure, so render_program is created when the object is constructed and deleted when the object is destructed.
      */
     struct Program{
     private:
@@ -24,7 +24,7 @@ namespace OpenGL{
          * @brief Construct a new Program object.
          * @param vertex_shader_path Path to the vertex shader source file.
          * @param fragment_shader_path Path to the fragment shader source file.
-         * @throw std::runtime_error In debug mode, each shader's compilation and program's linking state is checked and throw if it fails.
+         * @throw std::runtime_error In debug mode, each shader's compilation and render_program's linking state is checked and throw if it fails.
          */
         Program(const std::filesystem::path &vertex_shader_path, const std::filesystem::path &fragment_shader_path);
 
@@ -32,7 +32,7 @@ namespace OpenGL{
          * @brief Construct a new Program object.
          * @param vertex_shader Vertex shader.
          * @param fragment_shader Fragment shader.
-         * @throw std::runtime_error In debug mode, program's linking state is checked and throw if it fails.
+         * @throw std::runtime_error In debug mode, render_program's linking state is checked and throw if it fails.
          */
         Program(const Shader &vertex_shader, const Shader &fragment_shader);
 

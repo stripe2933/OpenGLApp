@@ -4,12 +4,12 @@
 
 /*
  * Show ImGui demo window.
- * You can distinguish the ImGui input and GLFW input using ImGuiIO::WantCaptureMouse. In this example, message printed
+ * You can distinguish the ImGui input and GLFW input using ImGuiIO::WantCaptureMouse. In this examples, message printed
  * only if user click the window region but not ImGui window region.
  */
 
 #include <iostream>
-#include <OpenGLApp/Window.hpp>
+#include "OpenGLApp/Window.hpp"
 #include <imgui.h>
 #include <imgui_impl_glfw.h>
 #include <imgui_impl_opengl3.h>

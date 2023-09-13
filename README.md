@@ -24,7 +24,7 @@ Now you can use the library in your target.
 
 ## Code
 
-See [example](https://github.com/stripe2933/OpenGLApp/blob/main/example/main.cpp) for the details. This program renders
+See [example](https://github.com/stripe2933/OpenGLApp/blob/main/example/main.cpp) for the details. This render_program renders
 a white triangle.
 
 ```cpp
@@ -39,7 +39,7 @@ private:
         glm::vec2 { 0.0f,  0.5f }
     };
 
-    OpenGL::Program program;
+    OpenGL::Program render_program;
     GLuint vao, vbo;
 
     void update(float time_delta) override {
@@ -49,14 +49,14 @@ private:
     void draw() const override {
         glClear(GL_COLOR_BUFFER_BIT);
 
-        program.use();
+        render_program.use();
         glBindVertexArray(vao);
         glDrawArrays(GL_TRIANGLES, 0, 3);
     }
 
 public:
     App() : Window { 800, 480, "Hello Triangle" },
-            program { "shaders/white_triangle.vert", "shaders/white_triangle.frag" }
+            render_program { "shaders/vert.vert", "shaders/frag.frag" }
     {
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
@@ -70,7 +70,7 @@ public:
     }
 
     ~App() noexcept override{
-        // program is automatically destroyed using RAII pattern.
+        // render_program is automatically destroyed using RAII pattern.
         glDeleteVertexArrays(1, &vao);
         glDeleteBuffers(1, &vbo);
     }
@@ -81,4 +81,4 @@ int main(){
 }
 ```
 
-![Result screenshot](example/white_triangle.png)
+![Result screenshot](examples/white_triangle/screenshot.png)

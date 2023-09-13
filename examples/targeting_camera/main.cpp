@@ -7,11 +7,13 @@
  * Drag screen to rotate the camera. Camera will rotate around the target point.
  */
 
-#include <OpenGLApp/Window.hpp>
-#include <OpenGLApp/Program.hpp>
-#include <OpenGLApp/Camera.hpp>
+#include "OpenGLApp/Window.hpp"
+#include "OpenGLApp/Program.hpp"
+#include "OpenGLApp/Camera.hpp"
 #include <glm/gtc/constants.hpp>
 #include <glm/ext/matrix_transform.hpp>
+
+#include "../models.hpp"
 
 struct Vertex{
     glm::vec3 position;
@@ -22,50 +24,6 @@ static_assert(std::is_standard_layout_v<Vertex>);
 
 class App : public OpenGL::Window{
 private:
-    static constexpr std::array<Vertex, 36> vertices {
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-        Vertex { {  0.5f, -0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-        Vertex { {  0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-        Vertex { {  0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-        Vertex { { -0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 1.f, 0.f, 0.f } },
-
-        Vertex { { -0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-        Vertex { {  0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-        Vertex { { -0.5f,  0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-        Vertex { { -0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 0.f } },
-
-        Vertex { { -0.5f,  0.5f,  0.5f }, { 0.f, 0.f, 1.f } },
-        Vertex { { -0.5f,  0.5f, -0.5f }, { 0.f, 0.f, 1.f } },
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 0.f, 0.f, 1.f } },
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 0.f, 0.f, 1.f } },
-        Vertex { { -0.5f, -0.5f,  0.5f }, { 0.f, 0.f, 1.f } },
-        Vertex { { -0.5f,  0.5f,  0.5f }, { 0.f, 0.f, 1.f } },
-
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 1.f, 1.f, 0.f } },
-        Vertex { {  0.5f,  0.5f, -0.5f }, { 1.f, 1.f, 0.f } },
-        Vertex { {  0.5f, -0.5f, -0.5f }, { 1.f, 1.f, 0.f } },
-        Vertex { {  0.5f, -0.5f, -0.5f }, { 1.f, 1.f, 0.f } },
-        Vertex { {  0.5f, -0.5f,  0.5f }, { 1.f, 1.f, 0.f } },
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 1.f, 1.f, 0.f } },
-
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 0.f, 1.f, 1.f } },
-        Vertex { {  0.5f, -0.5f, -0.5f }, { 0.f, 1.f, 1.f } },
-        Vertex { {  0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 1.f } },
-        Vertex { {  0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 1.f } },
-        Vertex { { -0.5f, -0.5f,  0.5f }, { 0.f, 1.f, 1.f } },
-        Vertex { { -0.5f, -0.5f, -0.5f }, { 0.f, 1.f, 1.f } },
-
-        Vertex { { -0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 1.f } },
-        Vertex { {  0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 1.f } },
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 1.f, 0.f, 1.f } },
-        Vertex { {  0.5f,  0.5f,  0.5f }, { 1.f, 0.f, 1.f } },
-        Vertex { { -0.5f,  0.5f,  0.5f }, { 1.f, 0.f, 1.f } },
-        Vertex { { -0.5f,  0.5f, -0.5f }, { 1.f, 0.f, 1.f } }
-    };
-
     std::optional<glm::vec2> previous_mouse_position;
     std::optional<glm::vec3> camera_velocity;
 
@@ -75,7 +33,7 @@ private:
         float speed = 2.5f;
     } camera_properties;
 
-    OpenGL::Program program;
+    OpenGL::Program render_program;
     OpenGL::Camera camera;
 
     glm::mat4 model, view, projection;
@@ -159,20 +117,20 @@ private:
     void draw() const override {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        program.use();
+        render_program.use();
         glBindVertexArray(vao);
-        glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+        glDrawArrays(GL_TRIANGLES, 0, static_cast<GLsizei>(models::colored_cube.size()));
     }
 
     void onCameraChanged(){
         view = camera.getView();
         projection = camera.getProjection(getAspectRatio());
-        program.setUniform("projection_view", projection * view);
+        render_program.setUniform("projection_view", projection * view);
     }
 
 public:
     App() : Window { 800, 480, "Targeting Camera" },
-            program { "shaders/targeting_camera.vert", "shaders/targeting_camera.frag" }
+            render_program { "shaders/targeting_camera/vert.vert", "shaders/targeting_camera/frag.frag" }
     {
         camera.distance = 5.f;
 
@@ -180,20 +138,20 @@ public:
         view = camera.getView();
         projection = camera.getProjection(getAspectRatio());
 
-        program.setUniform("model", model);
-        program.setUniform("projection_view", projection * view);
+        render_program.setUniform("model", model);
+        render_program.setUniform("projection_view", projection * view);
 
         glGenVertexArrays(1, &vao);
         glBindVertexArray(vao);
 
         glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * vertices.size(), vertices.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizei>(sizeof(VertexPC<3>) * models::colored_cube.size()), models::colored_cube.data(), GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLint*>(offsetof(Vertex, position)));
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPC<3>), reinterpret_cast<GLint*>(offsetof(Vertex, position)));
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), reinterpret_cast<GLint*>(offsetof(Vertex, color)));
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPC<3>), reinterpret_cast<GLint*>(offsetof(Vertex, color)));
         glEnableVertexAttribArray(1);
 
         glEnable(GL_DEPTH_TEST);
