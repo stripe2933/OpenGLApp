@@ -34,6 +34,8 @@ namespace OpenGL::State{
     std::optional<GLuint> getProgram();
     bool setProgram(GLuint program);
 
+    void setUniform(GLuint program, GLint uniform_location, int value);
+    void setUniform(GLuint program, GLint uniform_location, unsigned int value);
     void setUniform(GLuint program, GLint uniform_location, float value);
     void setUniform(GLuint program, GLint uniform_location, glm::vec3 &&value);
     void setUniform(GLuint program, GLint uniform_location, glm::vec4 &&value);

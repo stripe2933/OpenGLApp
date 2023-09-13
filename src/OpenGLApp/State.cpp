@@ -54,6 +54,14 @@ bool OpenGL::State::setProgram(GLuint program) {
     return false;
 }
 
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, int value){
+    ::setUniform(program, [=]() { glUniform1i(uniform_location, value); });
+}
+
+void OpenGL::State::setUniform(GLuint program, GLint uniform_location, unsigned int value){
+    ::setUniform(program, [=]() { glUniform1ui(uniform_location, value); });
+}
+
 void OpenGL::State::setUniform(GLuint program, GLint uniform_location, float value){
     ::setUniform(program, [=]() { glUniform1f(uniform_location, value); });
 }
