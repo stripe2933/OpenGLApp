@@ -24,7 +24,7 @@ Now you can use the library in your target.
 
 ## Code
 
-See [example](https://github.com/stripe2933/OpenGLApp/blob/main/example/main.cpp) for the details. This render_program renders
+See [examples](/examples) for the details. This render_program renders
 a white triangle.
 
 ```cpp
