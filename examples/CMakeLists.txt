@@ -14,5 +14,5 @@ example_executable(imgui imgui::imgui) # needs imgui library.
 example_executable(framebuffer)
 
 # Copy shader files to executable folder.
-add_custom_target(copy_shaders COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy_shaders.cmake)
-add_dependencies(${PROJECT_NAME} copy_shaders)
+add_custom_target(copy_assets COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_LIST_DIR}/copy_assets.cmake)
+add_dependencies(${PROJECT_NAME} copy_assets)

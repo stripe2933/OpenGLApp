@@ -205,7 +205,7 @@ private:
     }
 
     void setTextures(){
-        const OpenGL::Utils::Image container_img { "/Users/stripe2933/Downloads/container.jpg" };
+        const OpenGL::Utils::Image container_img { "assets/container.jpg" };
         glGenTextures(1, &container_texture);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, container_texture);
@@ -220,7 +220,7 @@ private:
                      container_img.data);
         glGenerateMipmap(GL_TEXTURE_2D);
 
-        const OpenGL::Utils::Image metal_img { "/Users/stripe2933/Downloads/metal.png" };
+        const OpenGL::Utils::Image metal_img { "assets/metal.png" };
         glGenTextures(1, &metal_texture);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, metal_texture);
