@@ -16,9 +16,9 @@ void OpenGL::Camera::invalidate_cache() noexcept {
 glm::vec3 OpenGL::Camera::getFront() const noexcept {
     if (!front.has_value()) {
         front = glm::vec3 {
-            std::cos(getYaw()) * std::cos(getPitch()),
+            std::sin(getYaw()) * std::cos(getPitch()),
             std::sin(getPitch()),
-            std::sin(getYaw()) * std::cos(getPitch())
+            -std::cos(getYaw()) * std::cos(getPitch())
         };
     }
     return front.value();
