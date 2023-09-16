@@ -15,13 +15,6 @@
 
 #include "../models.hpp"
 
-struct Vertex{
-    glm::vec3 position;
-    glm::vec3 color;
-};
-
-static_assert(std::is_standard_layout_v<Vertex>);
-
 class App : public OpenGL::Window{
 private:
     std::optional<glm::vec2> previous_mouse_position;
@@ -146,12 +139,25 @@ public:
 
         glGenBuffers(1, &vbo);
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
-        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizei>(sizeof(VertexPC<3>) * models::colored_cube.size()), models::colored_cube.data(), GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER,
+                     static_cast<GLsizei>(sizeof(VertexPC<3>) * models::colored_cube.size()),
+                     models::colored_cube.data(),
+                     GL_STATIC_DRAW);
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPC<3>), reinterpret_cast<GLint*>(offsetof(Vertex, position)));
+        glVertexAttribPointer(0,
+                              3,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(VertexPC<3>),
+                              reinterpret_cast<GLint*>(offsetof(VertexPC<3>, position)));
         glEnableVertexAttribArray(0);
 
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPC<3>), reinterpret_cast<GLint*>(offsetof(Vertex, color)));
+        glVertexAttribPointer(1,
+                              3,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(VertexPC<3>),
+                              reinterpret_cast<GLint*>(offsetof(VertexPC<3>, color)));
         glEnableVertexAttribArray(1);
 
         glEnable(GL_DEPTH_TEST);

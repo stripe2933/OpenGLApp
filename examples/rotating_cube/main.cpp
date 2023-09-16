@@ -11,12 +11,6 @@
 
 #include "../models.hpp"
 
-struct Vertex{
-    glm::vec3 position;
-    glm::vec3 normal;
-};
-static_assert(std::is_standard_layout_v<Vertex>);
-
 class App : public OpenGL::Window{
 private:
     OpenGL::Program render_program;
@@ -82,10 +76,23 @@ public:
 
         glGenBuffers(1, &cube.vbo);
         glBindBuffer(GL_ARRAY_BUFFER, cube.vbo);
-        glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizei>(sizeof(VertexPN<3>) * models::normal_cube.size()), models::normal_cube.data(), GL_STATIC_DRAW);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPN<3>), reinterpret_cast<const GLint*>(offsetof(Vertex, position)));
+        glBufferData(GL_ARRAY_BUFFER,
+                     static_cast<GLsizei>(sizeof(VertexPN<3>) * models::normal_cube.size()),
+                     models::normal_cube.data(),
+                     GL_STATIC_DRAW);
+        glVertexAttribPointer(0,
+                              3,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(VertexPN<3>),
+                              reinterpret_cast<const GLint*>(offsetof(VertexPN<3>, position)));
         glEnableVertexAttribArray(0);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(VertexPN<3>), reinterpret_cast<const GLint*>(offsetof(Vertex, normal)));
+        glVertexAttribPointer(1,
+                              3,
+                              GL_FLOAT,
+                              GL_FALSE,
+                              sizeof(VertexPN<3>),
+                              reinterpret_cast<const GLint*>(offsetof(VertexPN<3>, normal)));
         glEnableVertexAttribArray(1);
     }
 
