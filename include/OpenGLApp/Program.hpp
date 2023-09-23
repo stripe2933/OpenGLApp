@@ -51,14 +51,14 @@ namespace OpenGL{
          * @param name Name of the uniform variable.
          * @param value Value to set.
          */
-        void setUniform(std::string_view name, auto value);
+        void setUniform(std::string_view name, auto value) const;
 
         /**
          * @brief Set the uniform block binding point of the uniform block of \p name to \p binding_point .
          * @param name Name of the uniform block.
          * @param binding_point Binding point to set.
          */
-        void setUniformBlockBinding(const char *name, GLuint binding_point);
+        void setUniformBlockBinding(const char *name, GLuint binding_point) const;
 
         /**
          * @brief Method for calling \p glUseProgram .
@@ -72,7 +72,7 @@ namespace OpenGL{
 
 #include "State.hpp"
 
-void OpenGL::Program::setUniform(std::string_view name, auto value) {
+void OpenGL::Program::setUniform(std::string_view name, auto value) const {
     OpenGL::State::setUniform(handle, getUniformLocation(name), std::move(value));
 }
 

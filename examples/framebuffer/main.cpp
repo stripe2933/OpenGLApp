@@ -44,7 +44,7 @@ struct GLObject{
 
 class App : public OpenGL::Window {
 private:
-    mutable OpenGL::Program render_program, blur_program;
+    OpenGL::Program render_program, blur_program;
     GLObject cube, plane, quad;
     GLuint container_texture, metal_texture;
     GLuint fbo, texture_color_buffer, rbo;

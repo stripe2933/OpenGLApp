@@ -56,7 +56,7 @@ GLint OpenGL::Program::getUniformLocation(std::string_view name) const {
     return it->second;
 }
 
-void OpenGL::Program::setUniformBlockBinding(const char *name, GLuint binding_point) {
+void OpenGL::Program::setUniformBlockBinding(const char *name, GLuint binding_point) const {
     const GLuint index = glGetUniformBlockIndex(handle, name);
     glUniformBlockBinding(handle, index, binding_point);
 }
