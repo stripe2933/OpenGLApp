@@ -4,6 +4,7 @@
 
 #include "OpenGLApp/Shader.hpp"
 
+#include <array>
 #include <fstream>
 #include <cassert>
 

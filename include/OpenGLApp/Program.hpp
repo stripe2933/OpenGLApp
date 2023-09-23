@@ -5,6 +5,7 @@
 #pragma once
 
 #include <filesystem>
+#include <vector>
 #include <GL/glew.h>
 #include "Shader.hpp"
 
