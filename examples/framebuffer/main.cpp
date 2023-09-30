@@ -49,7 +49,7 @@ private:
     GLuint container_texture, metal_texture;
     GLuint fbo, texture_color_buffer, rbo;
 
-    OpenGL::Camera camera;
+    OpenGL::PerspectiveCamera camera;
     std::optional<glm::vec2> previous_mouse_position;
     const struct{
         float scroll_sensitivity = 0.1f;
@@ -59,7 +59,7 @@ private:
 
     void onFramebufferSizeChanged(int width, int height) override {
         OpenGL::Window::onFramebufferSizeChanged(width, height);
-        projection = camera.getProjection(getFramebufferAspectRatio());
+        projection = camera.projection.getMatrix(getFramebufferAspectRatio());
 
         // If screen size is changed, framebuffer's color buffer and render buffer also should be regenerated.
         // Previous buffer should be destroyed, so pass the delete_previous parameter as true.
@@ -68,11 +68,11 @@ private:
 
     void onScrollChanged(double xoffset, double yoffset) override {
         constexpr float min_distance = 1.f;
-        camera.distance = std::fmax(
-            std::exp(control.scroll_sensitivity * static_cast<float>(-yoffset)) * camera.distance,
+        camera.view.distance = std::fmax(
+            std::exp(control.scroll_sensitivity * static_cast<float>(-yoffset)) * camera.view.distance,
             min_distance
         );
-        view = camera.getView();
+        view = camera.view.getMatrix();
     }
 
     void onMouseButtonChanged(int button, int action, int mods) override {
@@ -93,10 +93,10 @@ private:
             const glm::vec2 offset = control.pan_sensitivity * (position - previous_mouse_position.value());
             previous_mouse_position = position;
 
-            camera.addYaw(offset.x);
-            camera.addPitch(-offset.y);
+            camera.view.addYaw(offset.x);
+            camera.view.addPitch(-offset.y);
 
-            view = camera.getView();
+            view = camera.view.getMatrix();
         }
     }
 
@@ -282,11 +282,11 @@ public:
             render_program { "shaders/framebuffer/render.vert", "shaders/framebuffer/render.frag" },
             blur_program { "shaders/framebuffer/gaussian_blur.vert", "shaders/framebuffer/gaussian_blur.frag" }
     {
-        camera.distance = 5.f;
-        camera.addPitch(-0.5f);
+        camera.view.distance = 5.f;
+        camera.view.addPitch(-0.5f);
 
-        view = camera.getView();
-        projection = camera.getProjection(getFramebufferAspectRatio());
+        view = camera.view.getMatrix();
+        projection = camera.projection.getMatrix(getFramebufferAspectRatio());
 
         setObjects();
         setTextures();

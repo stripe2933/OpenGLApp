@@ -27,7 +27,7 @@ private:
     } camera_properties;
 
     OpenGL::Program render_program;
-    OpenGL::Camera camera;
+    OpenGL::PerspectiveCamera camera;
 
     glm::mat4 model, view, projection;
     GLuint vao, vbo;
@@ -39,8 +39,8 @@ private:
 
     void onScrollChanged(double xoffset, double yoffset) override {
         constexpr float min_distance = 1.f;
-        camera.distance = std::fmax(
-            std::exp(camera_properties.scroll_sensitivity * static_cast<float>(-yoffset)) * camera.distance,
+        camera.view.distance = std::fmax(
+            std::exp(camera_properties.scroll_sensitivity * static_cast<float>(-yoffset)) * camera.view.distance,
             min_distance
         );
         onCameraChanged();
@@ -56,7 +56,6 @@ private:
         else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE){
             previous_mouse_position = std::nullopt;
         }
-        onCameraChanged();
     }
 
     void onCursorPosChanged(double xpos, double ypos) override {
@@ -65,8 +64,8 @@ private:
             const glm::vec2 offset = camera_properties.pan_sensitivity * (position - previous_mouse_position.value());
             previous_mouse_position = position;
 
-            camera.addYaw(offset.x);
-            camera.addPitch(-offset.y);
+            camera.view.addYaw(offset.x);
+            camera.view.addPitch(-offset.y);
 
             onCameraChanged();
         }
@@ -74,9 +73,9 @@ private:
 
     void onKeyChanged(int key, int scancode, int action, int mods) override {
         if (action == GLFW_PRESS){
-            const auto camera_front = camera.getFront();
-            const auto camera_right = camera.getRight();
-            const auto camera_up = camera.getUp();
+            const auto camera_front = camera.view.getFront();
+            const auto camera_right = camera.view.getRight();
+            const auto camera_up = camera.view.getUp();
 
             switch (key){
                 case GLFW_KEY_A:
@@ -102,7 +101,7 @@ private:
 
     void update(float time_delta) override {
         if (camera_velocity.has_value()){
-            camera.target += time_delta * camera_velocity.value();
+            camera.view.target += time_delta * camera_velocity.value();
             onCameraChanged();
         }
     }
@@ -116,8 +115,8 @@ private:
     }
 
     void onCameraChanged(){
-        view = camera.getView();
-        projection = camera.getProjection(getAspectRatio());
+        view = camera.view.getMatrix();
+        projection = camera.projection.getMatrix(getFramebufferAspectRatio());
         render_program.setUniform("projection_view", projection * view);
     }
 
@@ -125,11 +124,11 @@ public:
     App() : Window { 800, 480, "Targeting Camera" },
             render_program { "shaders/targeting_camera/vert.vert", "shaders/targeting_camera/frag.frag" }
     {
-        camera.distance = 5.f;
+        camera.view.distance = 5.f;
 
         model = glm::identity<glm::mat4>();
-        view = camera.getView();
-        projection = camera.getProjection(getAspectRatio());
+        view = camera.view.getMatrix();
+        projection = camera.projection.getMatrix(getFramebufferAspectRatio());
 
         render_program.setUniform("model", model);
         render_program.setUniform("projection_view", projection * view);

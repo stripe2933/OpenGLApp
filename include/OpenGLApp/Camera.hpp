@@ -10,7 +10,7 @@
 #include <glm/gtc/constants.hpp>
 
 namespace OpenGL{
-    class Camera{
+    class CameraView{
     private:
         static constexpr glm::vec3 world_up { 0.f, 1.f, 0.f };
 
@@ -25,11 +25,6 @@ namespace OpenGL{
         // View matrix parameters.
         glm::vec3 target = glm::zero<glm::vec3>(); // Target position, rendered in the center of the screen.
         float distance = 1.f; // Distance from target to camera.
-
-        // Projection matrix parameters.
-        float fov = glm::pi<float>() / 4; // Field of view in radians, must be in the range of (0, π).
-        float near_distance = 1e-2f; // Near distance from camera to target. If the target is closer than near_distance, it is clipped.
-        float far_distance = 1e4f; // Far distance from camera to target. If the target is farther than far_distance, it is clipped.
 
         /**
          * @brief Get camera's normalized front direction vector.
@@ -59,14 +54,7 @@ namespace OpenGL{
          * @brief Get view matrix of the camera.
          * @return 4x4 view matrix.
          */
-        [[nodiscard]] glm::mat4 getView() const noexcept;
-
-        /**
-         * @brief Get perspective projection matrix of the camera.
-         * @param region_size Size of the render region, must be positive.
-         * @return 4x4 perspective projection matrix.
-         */
-        [[nodiscard]] glm::mat4 getProjection(float aspect_ratio) const noexcept;
+        [[nodiscard]] glm::mat4 getMatrix() const noexcept;
 
         /**
          * @brief Get camera pitch angle.
@@ -93,5 +81,43 @@ namespace OpenGL{
          * @note This function ensures that the updated yaw angle is in the range of [0, 2π).
          */
         void addYaw(float amount) noexcept;
+    };
+
+    struct CameraProjection{};
+
+    struct PerspectiveProjection : CameraProjection {
+        float fov = glm::pi<float>() / 4; // Field of view in radians, must be in the range of (0, π).
+        float near_distance = 1e-2f; // Near distance from camera to target. If the target is closer than near_distance, it is clipped.
+        float far_distance = 1e4f; // Far distance from camera to target. If the target is farther than far_distance, it is clipped.
+
+        /**
+         * @brief Get perspective projection matrix of the camera.
+         * @param region_aspect_ratio Aspect ratio of the region size.
+         * @return 4x4 perspective projection matrix.
+         */
+        [[nodiscard]] glm::mat4 getMatrix(float region_aspect_ratio) const noexcept;
+    };
+
+    struct OrthographicProjection : CameraProjection {
+        float near_distance = 1e-2f; // Near distance from camera to target. If the target is closer than near_distance, it is clipped.
+        float far_distance = 1e4f; // Far distance from camera to target. If the target is farther than far_distance, it is clipped.
+
+        /**
+         * @brief Get orthographic projection matrix of the camera.
+         * @param region_position Position of the region rectangle.
+         * @param region_size Size of the region rectangle, must be positive.
+         * @return 4x4 orthographic projection matrix.
+         */
+        [[nodiscard]] glm::mat4 getMatrix(glm::vec2 region_position, glm::vec2 region_size) const noexcept;
+    };
+
+    struct PerspectiveCamera{
+        CameraView view;
+        PerspectiveProjection projection;
+    };
+
+    struct OrthographicCamera{
+        CameraView view;
+        OrthographicProjection projection;
     };
 };
