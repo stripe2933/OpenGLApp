@@ -5,6 +5,7 @@
 #include "OpenGLApp/Program.hpp"
 
 #include <fstream>
+#include <algorithm>
 
 namespace{
     GLuint createProgram(const OpenGL::Shader &vertex_shader, const OpenGL::Shader &fragment_shader) {
