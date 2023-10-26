@@ -120,4 +120,4 @@ namespace OpenGL{
         CameraView view;
         OrthographicProjection projection;
     };
-};
+}

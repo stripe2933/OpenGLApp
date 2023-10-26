@@ -43,7 +43,7 @@ namespace {
 
         return handle;
     }
-};
+}
 
 OpenGL::Shader::Shader(GLuint handle) : handle { handle } {
 

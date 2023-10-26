@@ -28,7 +28,7 @@ namespace{
 
         return handle;
     }
-};
+}
 
 OpenGL::Program::Program(const std::filesystem::path &vertex_shader_path, const std::filesystem::path &fragment_shader_path)
         : handle { createProgram(OpenGL::Shader::fromFile(GL_VERTEX_SHADER, vertex_shader_path),

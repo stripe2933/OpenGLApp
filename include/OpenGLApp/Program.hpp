@@ -68,7 +68,7 @@ namespace OpenGL{
         template <std::convertible_to<Program>... Programs>
         static void setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs);
     };
-};
+}
 
 #include "State.hpp"
 

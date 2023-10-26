@@ -38,4 +38,4 @@ namespace OpenGL{
         [[nodiscard]] float getAspectRatio() const noexcept;
         [[nodiscard]] float getFramebufferAspectRatio() const noexcept;
     };
-};
+}

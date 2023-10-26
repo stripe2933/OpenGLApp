@@ -48,4 +48,4 @@ namespace OpenGL::State{
     void setUniform(GLuint program, GLint uniform_location, glm::vec4 &&value);
     void setUniform(GLuint program, GLint uniform_location, glm::mat3 &&value);
     void setUniform(GLuint program, GLint uniform_location, glm::mat4 &&value);
-};
+}

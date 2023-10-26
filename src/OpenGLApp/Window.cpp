@@ -8,7 +8,7 @@
 
 namespace{
     GLFWwindow *createGlfwWindow(int width, int height, const char *title){
-        if(!glfwInit()){
+        if (!glfwInit()){
             throw std::runtime_error { "Failed to initialize GLFW" };
         }
 
@@ -20,14 +20,14 @@ namespace{
 #endif
 
         GLFWwindow* window = glfwCreateWindow(width, height, title, nullptr, nullptr);
-        if(!window){
+        if (!window){
             glfwTerminate();
             throw std::runtime_error { "Failed to create GLFW window" };
         }
 
         return window;
     }
-};
+}
 
 void OpenGL::Window::onWindowSizeChanged(int width, int height) {
     size = glm::uvec2(width, height);
@@ -70,27 +70,27 @@ OpenGL::Window::Window(int width, int height, const char *title)
     // Make callback can access the class instance using pointer.
     glfwSetWindowUserPointer(window, this);
     glfwSetWindowSizeCallback(window, [](GLFWwindow* window_ptr, int width, int height){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onWindowSizeChanged(width, height);
     });
     glfwSetFramebufferSizeCallback(window, [](GLFWwindow* window_ptr, int width, int height){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onFramebufferSizeChanged(width, height);
     });
     glfwSetKeyCallback(window, [](GLFWwindow* window_ptr, int key, int scancode, int action, int mods){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onKeyChanged(key, scancode, action, mods);
     });
     glfwSetMouseButtonCallback(window, [](GLFWwindow* window_ptr, int button, int action, int mods){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onMouseButtonChanged(button, action, mods);
     });
     glfwSetCursorPosCallback(window, [](GLFWwindow* window_ptr, double xpos, double ypos){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onCursorPosChanged(xpos, ypos);
     });
     glfwSetScrollCallback(window, [](GLFWwindow* window_ptr, double xoffset, double yoffset){
-        auto app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
+        auto *app = static_cast<Window*>(glfwGetWindowUserPointer(window_ptr));
         app->onScrollChanged(xoffset, yoffset);
     });
 }
