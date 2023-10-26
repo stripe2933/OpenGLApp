@@ -11,11 +11,11 @@ namespace OpenGL{
     class Shader{
     private:
         Shader(GLuint handle);
-        Shader(const Shader&) = delete; // Shader cannot be copied.
 
     public:
         const GLuint handle;
 
+        Shader(const Shader&) = delete; // Shader cannot be copied.
         ~Shader() noexcept;
 
         static Shader fromSource(GLenum type, const char *source);
