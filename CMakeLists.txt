@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.11)
 project(OpenGLApp LANGUAGES CXX)
 
-if (NOT DEFINED OPENGLAPP_BUILD_EXAMPLE)
-    set(OPENGLAPP_BUILD_EXAMPLE OFF)
-endif()
-
 find_package(OpenGL REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(glfw3 REQUIRED)
@@ -24,6 +20,11 @@ target_include_directories(OpenGLApp PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include 
 target_link_libraries(OpenGLApp PUBLIC OpenGL::GL GLEW::GLEW glfw glm::glm)
 target_compile_features(OpenGLApp PUBLIC cxx_std_20)
 
-if (OPENGLAPP_BUILD_EXAMPLE)
+# Set OPENGLAPP_STANDALONE_BUILD flag if it is unset and project is top-level project.
+if (NOT DEFINED OPENGLAPP_STANDALONE_BUILD)
+    set(OPENGLAPP_STANDALONE_BUILD (CMAKE_CURRENT_SOURCE_DIR STREQUAL CMAKE_SOURCE_DIR))
+endif()
+
+if (OPENGLAPP_STANDALONE_BUILD)
     add_subdirectory(examples)
 endif()
