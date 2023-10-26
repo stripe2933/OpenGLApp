@@ -6,6 +6,7 @@
 
 #include <map>
 #include <queue>
+#include <functional>
 
 #include <glm/gtc/type_ptr.hpp>
 
