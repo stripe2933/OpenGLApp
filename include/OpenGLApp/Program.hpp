@@ -65,7 +65,7 @@ namespace OpenGL{
          */
         void use() const;
 
-        template <typename... Programs>
+        template <std::convertible_to<Program>... Programs>
         static void setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs);
     };
 };
@@ -76,7 +76,7 @@ void OpenGL::Program::setUniform(std::string_view name, auto value) const {
     OpenGL::State::setUniform(handle, getUniformLocation(name), std::move(value));
 }
 
-template <typename... Programs>
+template <std::convertible_to<OpenGL::Program>... Programs>
 void OpenGL::Program::setUniformBlockBindings(const char *name, GLuint binding_point, Programs &...programs) {
     (programs.setUniformBlockBinding(name, binding_point), ...);
 }
